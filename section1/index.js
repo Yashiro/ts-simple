@@ -26,3 +26,24 @@ var Color;
 })(Color || (Color = {}));
 var colorName = Color[2];
 console.log(colorName);
+// Any 是跳过类型检查，对原先使用 JS 的项目进行重构时用到
+var notSure = 4;
+notSure = 'maybe a string instead';
+notSure = false;
+var anyList = [1, true, 'free'];
+list[1] = 100;
+// void 与 any 相反, 不返回任何值
+function warnUsre() {
+    console.log('This is my warning messge');
+}
+// void 只能赋值 undefined 或 null
+var unuseable = null || undefined;
+// undefined || null 这两个都是所有类型的子类型, ts 中子类型可以赋值给父类型
+var u = undefined;
+// let n: null = undefined
+// 做空值检查会报错 tsc index.ts --strictNullChecks
+// let num: number = 3
+// num = null
+// 联合类型
+var numJoint = 3;
+numJoint = null;
