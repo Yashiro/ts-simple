@@ -51,6 +51,31 @@ for(var i = 0; i < 10; i++) {
     (function (j) {
         setTimeout(() => {
             console.log(j)
-        }, 1000 * j)
+        }, 100 * j)
     })(i)
+}
+
+// let 有块级作用域概念、在同一块中不可重复声明
+// 屏蔽功能
+function sumMatrixByLet(matrix: number[][]) {
+    let sum = 0
+    for (let i = 0; i < matrix.length; i++) {
+        let currentRow = matrix[i]
+        for (let i = 0; i < currentRow.length; i++) {
+            sum += currentRow[i]
+        }
+    }
+    return sum
+}
+let matrixByLet = [
+    [1, 2, 3],
+    [4, 5, 6]
+]
+console.log('let =>', sumMatrixByLet(matrixByLet))
+
+// let 块级作用域创建新的变量环境; 在每次迭代时能创建新的作用域
+for (let i = 0; i < 10; i++) {
+    setTimeout(() => {
+        console.log(`let ${i} => `, i)
+    }, 100 * i)
 }
