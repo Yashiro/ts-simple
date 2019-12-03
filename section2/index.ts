@@ -79,3 +79,14 @@ for (let i = 0; i < 10; i++) {
         console.log(`let ${i} => `, i)
     }, 100 * i)
 }
+
+// const 与 let 用法一样
+// 区别就是不能对 const 声明的常量重新赋值, 但可以对其中的属性重新赋值
+// 除要对引用的变量值进行改变的，都应该使用 const
+const numLivesForCat = 9
+const kitty = {
+    name: 'Kitty',
+    numLives: numLivesForCat
+}
+kitty.name = 'Jerry'
+kitty.numLives--
