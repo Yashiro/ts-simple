@@ -90,3 +90,56 @@ const kitty = {
 }
 kitty.name = 'Jerry'
 kitty.numLives--
+
+
+// 解构
+// 数组解构
+let input: [number, number] = [1, 2]
+let [ first, second ] = input
+
+// 函数参数解构
+function unstructure([first, second]: [number, number]) {
+    console.log('unstructure => ', first)
+    console.log('unstructure => ', second)
+}
+unstructure(input)
+
+// ... 语法创建剩余变量
+let [one, ...rest] = [1, 2, 3, 4]
+console.log('one => ', one)
+console.log('rest => ', rest)
+
+// 对象解构
+let o = {
+    a: 'foo',
+    b: 12,
+    c: 'bar'
+}
+// let {a, ...passthrough} = o
+// let total= passthrough.b + passthrough.c.length
+// console.log('total => ', total)
+// 属性重命名, 这样会和指定类型混淆, 是一种不好的方式
+// let {a: newName1, b: newName2} = o
+
+// 对解构属性指定类型
+let {a, b}: {a: string, b: number} = o
+
+// 函数中参数的类型是一个对象解构
+// b? 中的 ? 表示这个参数是可选
+function keepWholeObject(wholeObject: {a: string, b?: string}) {
+    let {a, b = 1001} = wholeObject
+    console.log('keepWholeObject a => ', a)
+    console.log('keepWholeObject b => ', b)
+}
+
+// 函数声明中的解构应用
+// type c = {a: string, b?: number}
+function statement({a, b = 0} = {a: ''}): void {
+    console.log('statement a => ', a)
+    console.log('statement b => ', b)
+}
+// 下面两种都可以正常编译和执行
+statement({a: 'yes'})
+statement()
+// 下面这样编译是无法通过, 原因就是在声明参数的时候已经指定 a 是必传参数
+// statement({})
