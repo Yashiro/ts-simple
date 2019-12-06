@@ -143,3 +143,21 @@ statement({a: 'yes'})
 statement()
 // 下面这样编译是无法通过, 原因就是在声明参数的时候已经指定 a 是必传参数
 // statement({})
+
+
+// 展开
+// 数组展开, 整个过程是浅拷贝, 对 bothPlug 数组的修改不会影响原始数组
+let chapter1 = [1, 2]
+let chapter2 = [3, 4]
+let bothPlug = [0, ...chapter1, ...chapter2, 5]
+console.log('bothPlug => ', bothPlug)
+
+// 对象展开
+let defaults = {
+    food: 'spicy',
+    price: '$10',
+    ambiance: 'noisy'
+}
+// 这里会把原来 food 键值覆盖, 原则是后面的覆盖前面的
+let search = { ...defaults, food: 'rich' }
+console.log('search => ', search)
