@@ -61,3 +61,90 @@ console.log('ro => ', ro)
 ro1 = ro
 console.log('ro1 => ', ro1)
 // 判定是使用 const 还是使用 readonly 的依据主要是看是变量还是属性
+
+// 额外属性检查
+interface Circle {
+    color: string
+    area: number
+}
+interface  CircleConfig{
+    color?: string,
+    radius?: number,
+    pi?: number
+    // 索引签名(任意类型)
+    [propName: string]: any
+}
+function createCircle(config: CircleConfig): Circle {
+    let newCircle = { color: 'black', area: 100 }
+    if (config.color) newCircle.color = config.color
+    if (config.radius) {
+        newCircle.area = config.radius * config.pi
+    }
+    return newCircle
+}
+console.log(createCircle({color : 'gray', radius: 9, pi: 3.14}))
+// 如在下面传入一个没有定义的属性是可以编译通过的
+console.log(createCircle({color : 'gray', radius: 9, pi: 3.14, defaultArea: 300}))
+
+// 函数类型
+// 函数类型接口
+interface SearchFunc {
+    // 定义一个函数调用签名
+    // 只有参数列表和返回值类型的函数定义
+    (source: string, subString: string): boolean
+}
+let mySearch: SearchFunc
+// 实现函数类型接口
+// 只要保持参数列表个数和类型以及返回类型与接口定义一致即可
+mySearch = function (src: string, sub: string): boolean {
+    let result = src.search(sub)
+    return result > -1
+}
+// 也可做如下的类型推断方式的写法
+mySearch = function (src, sub) {
+    let result = src.search(sub)
+    return result > -1
+}
+
+// 可索引的类型
+// 数字签名
+interface StringArray {
+    // 索引签名
+    [index: number]: string
+}
+// 赋值索引类型变量
+let myArray: StringArray
+myArray = ['Bob', 'Fred']
+// 此处使用 number 类型的索引会得到一个 string 类型的返回值
+let myStr: string = myArray[0]
+console.log('myStr => ', myStr)
+
+// 数字签名和字符串签名兼容方式
+// 规则是数字索引返回值必须是字符串索引返回值的子集
+class Animal {
+    name: string
+}
+class Dog extends Animal{
+    bread: string
+}
+interface NotOkay {
+    // 注意子类型定义要在父类型之前
+    [x: number]: Dog
+    [x: string]: Animal
+}
+
+// 另一个例子
+interface NumberDictionary {
+    [index: string]: number
+    // 这种类型定义是正确, 与上面的索引签名匹配
+    length: number
+    // 下面这种静态检查就会报类型不匹配
+    // name: string
+}
+
+// 再举一个例子
+interface ReadonlyStringArray {
+    readonly [index: number]: string
+}
+let readonlyArray: ReadonlyStringArray = ['Alice', 'Bob']
+// 如之后再赋值就会报错
