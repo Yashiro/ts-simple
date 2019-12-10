@@ -148,3 +148,125 @@ interface ReadonlyStringArray {
 }
 let readonlyArray: ReadonlyStringArray = ['Alice', 'Bob']
 // 如之后再赋值就会报错
+
+
+// 类类型
+interface ClockInterface {
+    currentTime: Date
+
+    setTime(d: Date)
+}
+// 构造器签名
+interface ClockConstructor {
+    new(hour: number, minute: number)
+}
+// 类包含两种类型: 静态类型、实例类型
+// 此时如果实现构造器的接口时会报错
+// 因为 ts 只对类的实例部分检查而不会对静态部分进行检查
+class Clock implements ClockInterface {
+    currentTime: Date
+
+    // 此处的构造器就是静态类型
+    constructor(h: number, m: number) {}
+
+    setTime(d: Date) {
+        this.currentTime = d
+    }
+}
+
+// 静态类型、实例类型的兼容写法
+interface ClockInterfaceAgain {
+    tick()
+}
+interface ClockConstructorAgain {
+    new(hour: number, minute: number): ClockInterfaceAgain
+}
+// 工厂方法
+function createClock(clockConstructorAgain: ClockConstructorAgain, hour: number, minute: number): ClockInterfaceAgain {
+    return new clockConstructorAgain(hour, minute)
+}
+class DigitalClock implements ClockInterfaceAgain {
+    constructor(h: number, m: number) {
+
+    }
+    tick() {
+        console.log('beep beep')
+    }
+}
+class AnalogClock implements ClockInterfaceAgain {
+    constructor(h: number, m: number) {
+
+    }
+    tick() {
+        console.log('tick toc')
+    }
+}
+let digital = createClock(DigitalClock, 12, 17)
+let anallog = createClock(AnalogClock, 7, 32)
+
+digital.tick()
+anallog.tick()
+
+// 继承接口
+interface Shape {
+    color: string
+}
+interface PenStroke {
+    penWidth: number
+}
+interface Square extends Shape, PenStroke {
+    sideLenght: number
+}
+let squre = {} as Square
+squre.color = 'blue'
+squre.sideLenght = 10
+squre.penWidth = 5.0
+
+// 混合类型
+interface Counter {
+    (start: number): string
+
+    interval: number
+
+    reset(): void
+}
+function getCounter(): Counter {
+    let counter = (function (star: number) {
+
+    }) as Counter
+
+    counter.interval = 123
+
+    counter.reset = function () {
+
+    }
+
+    return counter
+}
+let count = getCounter()
+count(10)
+count.reset()
+count.interval = 5.0
+
+// 接口继承类
+class Control {
+    private state: any
+}
+interface SelectableControl extends Control {
+    select()
+}
+class Button extends Control implements SelectableControl {
+    select() {
+    }
+}
+class TextBox extends Control {
+    select() {
+    }
+}
+// 下面这种写法会报错
+// 因为实现的接口 SelectableControl 继承于 Control
+// 而 ImageC 不是 Control 子类, 不含有私有属性 state
+// class ImageC implements SelectableControl {
+//     select() {
+//     }
+// }
