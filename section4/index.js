@@ -110,7 +110,8 @@ var Human = /** @class */ (function () {
     //     this.name = name
     // }
     // 所谓参数属性就是对构造器参数添加一个访问限定符
-    // 例如 private、protected
+    // 例如 readonly、private、protected
+    // 在工程项目中不建议使用参数属性, 而是像上方注释的声明属性前加访问限定符
     function Human(name) {
         this.name = name;
         this.name = name;
@@ -121,3 +122,50 @@ var Human = /** @class */ (function () {
 // 之后再对类属性赋值会报错
 var john = new Human('John');
 console.log(john);
+// 存取器
+// 此处编译要使用 tsc index.ts --target es5
+// vue 也是使用 Object.defineProperty 对象劫持
+var password = 'pwd';
+var Staff = /** @class */ (function () {
+    function Staff() {
+    }
+    Object.defineProperty(Staff.prototype, "fullName", {
+        get: function () {
+            return this._fullName;
+        },
+        set: function (newName) {
+            if (password && password === 'pwd') {
+                this._fullName = newName;
+            }
+            else {
+                console.log('Error: Unauthorized update of staff');
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return Staff;
+}());
+var staff = new Staff();
+staff.fullName = 'Bob Smith';
+if (staff.fullName) {
+    console.log(staff.fullName);
+}
+// 静态属性
+var Grid = /** @class */ (function () {
+    function Grid(scale) {
+        this.scale = scale;
+    }
+    Grid.prototype.calculateDistanceFromOrigin = function (point) {
+        var xDist = point.x - Grid.origin.x;
+        var yDist = point.y - Grid.origin.y;
+        // 勾股定理计算距离
+        return Math.sqrt(xDist * xDist + yDist * yDist) * this.scale;
+    };
+    Grid.origin = { x: 0, y: 0 };
+    return Grid;
+}());
+var grid1 = new Grid(1.0);
+var grid2 = new Grid(5.0);
+console.log(grid1.calculateDistanceFromOrigin({ x: 3, y: 4 }));
+console.log(grid2.calculateDistanceFromOrigin({ x: 3, y: 4 }));
