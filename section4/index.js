@@ -169,3 +169,53 @@ var grid1 = new Grid(1.0);
 var grid2 = new Grid(5.0);
 console.log(grid1.calculateDistanceFromOrigin({ x: 3, y: 4 }));
 console.log(grid2.calculateDistanceFromOrigin({ x: 3, y: 4 }));
+// 抽象类
+var Department = /** @class */ (function () {
+    function Department(name) {
+        this.name = name;
+    }
+    Department.prototype.printName = function () {
+        console.log('Department name ' + this.name);
+    };
+    return Department;
+}());
+var AccountingDepartment = /** @class */ (function (_super) {
+    __extends(AccountingDepartment, _super);
+    function AccountingDepartment() {
+        return _super.call(this, 'Accounting ad Auditing') || this;
+    }
+    AccountingDepartment.prototype.printMeeting = function () {
+        console.log('The Accounting Department meets each Monday at 10am');
+    };
+    AccountingDepartment.prototype.generateReports = function () {
+        console.log('Generating accounting reports...');
+    };
+    return AccountingDepartment;
+}(Department));
+var department = new AccountingDepartment();
+department.printMeeting();
+department.printName();
+// 高级技巧
+var GreeterClazz = /** @class */ (function () {
+    function GreeterClazz(message) {
+        this.greeting = message;
+    }
+    GreeterClazz.prototype.greet = function () {
+        if (this.greeting) {
+            return 'Hello, ' + this.greeting;
+        }
+        else {
+            return GreeterClazz.standardGreeting;
+        }
+    };
+    GreeterClazz.standardGreeting = 'Hello, there';
+    return GreeterClazz;
+}());
+var greeterMain = new GreeterClazz();
+console.log(greeterMain.greet());
+// 此处声明 GreeterClazz 静态类型
+var greeterMaker = GreeterClazz;
+// 修改静态属性
+greeterMaker.standardGreeting = 'Hey there';
+var greeterAssign = new greeterMaker();
+console.log(greeterAssign.greet());

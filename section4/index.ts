@@ -153,3 +153,74 @@ let grid1 = new Grid(1.0)
 let grid2 = new Grid(5.0)
 console.log(grid1.calculateDistanceFromOrigin({ x: 3, y: 4 }))
 console.log(grid2.calculateDistanceFromOrigin({ x: 3, y: 4 }))
+
+// 抽象类
+abstract class Department {
+    name: string
+
+    constructor(name: string) {
+        this.name = name
+    }
+
+    printName(): void {
+        console.log('Department name ' + this.name)
+    }
+
+    abstract printMeeting(): void
+}
+class AccountingDepartment extends Department {
+    constructor() {
+        super('Accounting ad Auditing')
+    }
+
+    printMeeting(): void {
+        console.log('The Accounting Department meets each Monday at 10am')
+    }
+
+    generateReports(): void {
+        console.log('Generating accounting reports...')
+    }
+}
+let department: Department = new AccountingDepartment()
+department.printMeeting()
+department.printName()
+
+// 高级技巧
+// 修改静态属性
+class GreeterClazz {
+    static standardGreeting = 'Hello, there'
+
+    greeting: string
+
+    constructor(message?: string) {
+        this.greeting = message
+    }
+
+    greet() {
+        if (this.greeting) {
+            return 'Hello, ' + this.greeting
+        } else {
+            return GreeterClazz.standardGreeting
+        }
+    }
+}
+let greeterMain: GreeterClazz = new GreeterClazz()
+console.log(greeterMain.greet())
+
+// 此处声明 GreeterClazz 静态类型
+let greeterMaker: typeof GreeterClazz = GreeterClazz
+// 修改静态属性
+greeterMaker.standardGreeting = 'Hey there'
+
+let greeterAssign: GreeterClazz = new greeterMaker()
+console.log(greeterAssign.greet())
+
+// 类当接口使用
+class Point {
+    x: number
+    y: number
+}
+interface Point3d extends Point {
+    z: number
+}
+let point3d: Point3d = { x: 1, y: 2, z: 3 }
