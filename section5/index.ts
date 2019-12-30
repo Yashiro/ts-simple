@@ -124,6 +124,8 @@ interface UIElement {
 class Handler {
     type: string
 
+    // 此处要使用箭头函数, 才能和 UIElement 的 addClickListener 中的参数类型匹配
+    // onClickBad = function(this: Handler, e: Event) {}
     onClickBad = (e: Event) => {
         this.type = e.type
     }
