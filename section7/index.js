@@ -40,3 +40,23 @@ var jim = extend(new Person('jim'), new ConsoleLogger());
 console.log('jim => ', jim);
 console.log('jim name => ', jim.name);
 jim.log();
+// 联合类型
+// 属于由 | 分割的多个类型之一
+function padLeft(value, padding) {
+    if (typeof padding === 'number') {
+        return Array(padding + 1).join('  ') + value;
+    }
+    if (typeof padding === 'string') {
+        return padding + value;
+    }
+    throw new Error("Expected string or number got " + padding);
+}
+console.log('padLeft => ', padLeft('Hello World', 4));
+function getSmallPet() {
+    // ..
+    return;
+}
+var pet = getSmallPet();
+// layEggs 是 Fish 和 Bird 共有的函数可以被 pet 调用
+// 而其他独有的函数则不能被 pet 调用
+pet.layEggs();
