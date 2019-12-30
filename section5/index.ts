@@ -270,5 +270,33 @@ class Lion extends Animal {
 function createInstance<T extends Animal>(c: new() => T): T {
     return new c()
 }
-createInstance(Lion).keeper.nameTag
-createInstance(Bee).keeper.hasMoak
+// createInstance(Lion).keeper.nameTag
+// createInstance(Bee).keeper.hasMoak
+
+// 类型推断
+// 最佳通用类型
+class Animals {
+    numLegs: number
+}
+class Tiger extends Animals {
+
+}
+class Sheep extends Animals {
+
+}
+let zooNoType = [new Tiger(), new Sheep()]
+console.log('zoo no type => ', zooNoType)
+let zoo: Animals[] = [new Tiger(), new Sheep()]
+console.log('zoo => ', zoo)
+
+// 上下文类型
+// tsc 类型检查器会根据等式左边的类型来推断右边的类型是否匹配
+// 因此 mouseEvent 不明确 any 类型而调用 clickTime 属性是会报错
+// window.onmousedown = function (mouseEvent: any) {
+//     console.log(mouseEvent.clickTime)
+// }
+
+// 上下文类型选出 Animals[] 为最佳通用类型
+function createZoo(): Animals[] {
+    return [new Tiger(), new Sheep()]
+}

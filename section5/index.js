@@ -252,5 +252,40 @@ var Lion = /** @class */ (function (_super) {
 function createInstance(c) {
     return new c();
 }
-createInstance(Lion).keeper.nameTag;
-createInstance(Bee).keeper.hasMoak;
+// createInstance(Lion).keeper.nameTag
+// createInstance(Bee).keeper.hasMoak
+// 类型推断
+// 最佳通用类型
+var Animals = /** @class */ (function () {
+    function Animals() {
+    }
+    return Animals;
+}());
+var Tiger = /** @class */ (function (_super) {
+    __extends(Tiger, _super);
+    function Tiger() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return Tiger;
+}(Animals));
+var Sheep = /** @class */ (function (_super) {
+    __extends(Sheep, _super);
+    function Sheep() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return Sheep;
+}(Animals));
+var zooNoType = [new Tiger(), new Sheep()];
+console.log('zoo no type => ', zooNoType);
+var zoo = [new Tiger(), new Sheep()];
+console.log('zoo => ', zoo);
+// 上下文类型
+// tsc 类型检查器会根据等式左边的类型来推断右边的类型是否匹配
+// 因此 mouseEvent 不明确 any 类型而调用 clickTime 属性是会报错
+// window.onmousedown = function (mouseEvent: any) {
+//     console.log(mouseEvent.clickTime)
+// }
+// 上下文类型选出 Animals[] 为最佳通用类型
+function createZoo() {
+    return [new Tiger(), new Sheep()];
+}
