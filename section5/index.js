@@ -108,6 +108,8 @@ console.log('card refactor => ', pickedCardRefactor.card);
 var Handler = /** @class */ (function () {
     function Handler() {
         var _this = this;
+        // 此处要使用箭头函数, 才能和 UIElement 的 addClickListener 中的参数类型匹配
+        // onClickBad = function(this: Handler, e: Event) {}
         this.onClickBad = function (e) {
             _this.type = e.type;
         };
@@ -141,3 +143,29 @@ var pickedCard1 = myDeck[pickCard(myDeck)];
 console.log('card: ' + pickedCard1.card + ' of ' + pickedCard1.suit);
 var pickedCard2 = pickCard(15);
 console.log('card: ' + pickedCard2.card + ' of ' + pickedCard2.suit);
+// 泛型
+// T 类型变量, 只用来表示类型而不是值, 用来捕获传入类型
+// 泛型函数
+function identity(arg) {
+    return arg;
+}
+// 当 tsc 编译器无法推断出类型时应使用此方式
+var output1 = identity('myString1');
+// 类型推断方式, 一般情况下推荐此种方式
+var output2 = identity('myString2');
+// 泛型变量的使用
+// 此处函数接收两个参数, 一个是类型参数 T, 另一个是参数 arg 且返回类型是 T 的数组
+function loggingIdentity(arg) {
+    console.log(arg.length);
+    return arg;
+}
+// 泛型类型的使用
+function identityType(arg) {
+    return arg;
+}
+// 泛型函数类型
+var myIdentityType = identityType;
+// 调用签名的字面量, 可改用如下泛型接口方式
+var myIdentitySign = identityType;
+var myGenericIdentityFn = identityType;
+var myGenericIdentityFnTpye = identityType;
